@@ -1,0 +1,14 @@
+.videoContainer {
+  width: 90%;
+  padding: 10px;
+  margin: 50px auto 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.videoContainer video {
+  width: 300px;
+  height: 300px;
+}

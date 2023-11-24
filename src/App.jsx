@@ -26,15 +26,21 @@ function App() {
   useEffect(() => {
     (async () => {
       try {
-        const localMediaStream = await navigator.mediaDevices.getUserMedia({
-          audio: false,
+        const rtcLocalMediaStream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
           video: true,
         });
-        LocalVideo.current.srcObject = localMediaStream;
+        const videoStream = new MediaStream();
+        rtcLocalMediaStream
+          .getVideoTracks()
+          .forEach((track) => videoStream.addTrack(track));
+        LocalVideo.current.srcObject = videoStream;
         RemoteVideo.current.srcObject = RemoteStream;
-        localMediaStream
+        rtcLocalMediaStream
           .getTracks()
-          .forEach((track) => RTCConnection.addTrack(track, localMediaStream));
+          .forEach((track) =>
+            RTCConnection.addTrack(track, rtcLocalMediaStream)
+          );
         RTCConnection.ontrack = (event) => {
           event.streams[0]
             .getTracks()
